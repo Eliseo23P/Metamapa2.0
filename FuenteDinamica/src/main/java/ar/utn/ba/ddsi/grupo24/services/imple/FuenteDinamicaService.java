@@ -1,10 +1,18 @@
-package ar.utn.ba.ddsi.grupo24.services.Implementacion;
+package ar.utn.ba.ddsi.grupo24.services.imple;
 
+import ar.utn.ba.ddsi.grupo24.dto.DtoCoordenada;
+import ar.utn.ba.ddsi.grupo24.dto.DtoInputHecho;
+import ar.utn.ba.ddsi.grupo24.dto.DtoMultimedia;
+import ar.utn.ba.ddsi.grupo24.dto.DtoOutPutHecho;
+import ar.utn.ba.ddsi.grupo24.models.Coordenada;
+import ar.utn.ba.ddsi.grupo24.models.Hecho;
+import ar.utn.ba.ddsi.grupo24.models.Multimedia;
+import ar.utn.ba.ddsi.grupo24.services.IFuenteDinamicaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,42 +23,35 @@ public class FuenteDinamicaService implements IFuenteDinamicaService {
     private IHechoRepositoryJPA HechoFuenteDinamicaRepository;
 
     @Override
-    public DtoOutPutHecho crearHecho(DtoInputHecho dtoHecho) {
+    public void crearHecho(DtoInputHecho dtoHecho) {
         Hecho hecho = this.instanciarHecho(dtoHecho);
-       // aca tiene que existir una exep this.HechoFuenteDinamicaRepository.save(hechoASubir);
-        return mapearDtoOutput(hechoASubir);
+        this.HechoFuenteDinamicaRepository.save(hecho);
     }
     public Hecho instanciarHecho(DtoInputHecho dto){
 
-        //instanciar primero coordenadas-> si es un data object , para que?
-        //multimedia si es que hay- este si
+        Coordenada coordenada = new Coordenada(dto.getCoordenada().getLatitud(),
+                dto.getCoordenada().getLongitud());
+
+        List<Multimedia> listaMultimedia = new ArrayList<>();
+        if (dto.getMultimedias() != null) {
+            for (DtoMultimedia m : dto.getMultimedias()) {
+                listaMultimedia.add(new Multimedia(m.getTitulo(),m.getPath(),m.getDuracion()));
+            }
+        }
         return new Hecho(
                 dto.getTitulo(),
                 dto.getDescripcion(),
                 dto.getCategoria(),
-                dto.getFechaDeCuandoSucedioElEvento(),
-                dto.getId_UsuarioOrigen(),
-                LocalDateTime.now()
+                listaMultimedia,
+                coordenada,
+                dto.getFechaHecho(),
+                dto.getId_UsuarioOrigen()
         );
-    }
-    public DtoOutPutHecho mapearDtoOutput(Hecho h) {
-
-        DtoOutPutHecho dto = new DtoOutPutHecho();
-        dto.setId(h.getId());
-        dto.setTitulo(h.getTitulo());
-        dto.setDescripcion(h.getDescripcion());
-        dto.setCategoria(h.getCategoria());
-        //por el momento el path no lo cargo
-        dto.setLatitud(h.getLatitud());
-        dto.setLongitud(h.getLongitud());
-        dto.setFechaDeCuandoSucedioElEvento(h.getFechaAcontecimiento());
-        dto.setId_Usuario(h.getId());
-        return dto;
     }
     @Override
     public DtoOutPutHecho editarHecho(DtoInputHecho dto, Long id){
 
-        if (dto.getId_Usuario() == null) {
+        if (dto.getId_UsuarioOrigen() == null) {
             throw new IllegalArgumentException("Solo un usuario registrado puede modificar un hecho.");
         }
         Hecho hechoAmodificar = this.HechoFuenteDinamicaRepository.findById(id).orElse(null);
@@ -59,7 +60,7 @@ public class FuenteDinamicaService implements IFuenteDinamicaService {
             throw  new IllegalArgumentException("No se encontro el hecho a modificar");
         }
 
-        LocalDate fechaLimite = hechoAmodificar.getFechaCarga().plusDays(7);
+        LocalDate fechaLimite = hechoAmodificar.getFechaCreacion().plusDays(7);
         LocalDate ahora = LocalDate.now();
 
         if (fechaLimite.isBefore(ahora)) {
@@ -68,10 +69,10 @@ public class FuenteDinamicaService implements IFuenteDinamicaService {
         hechoAmodificar.setTitulo(dto.getTitulo());
         hechoAmodificar.setDescripcion(dto.getDescripcion());
         hechoAmodificar.setCategoria(dto.getCategoria());
-        hechoAmodificar.setLatitud(dto.getLatitud());
-        hechoAmodificar.setLongitud(dto.getLongitud());
+        //hechoAmodificar.setLatitud(dto.getLatitud());
+        //hechoAmodificar.setLongitud(dto.getLongitud());
         // hechoAmodificar.setMultimedias(dto.getPathMultimedia());
-        hechoAmodificar.setFechaAcontecimiento(dto.getFechaDeCuandoSucedioElEvento());
+        hechoAmodificar.setFechaHecho(dto.getFechaHecho());
 
         this.HechoFuenteDinamicaRepository.save(hechoAmodificar);
 
@@ -82,7 +83,25 @@ public class FuenteDinamicaService implements IFuenteDinamicaService {
     public List<DtoOutPutHecho> findAll(){
         List<Hecho> hechos = this.HechoFuenteDinamicaRepository.findAll();
         return hechos.stream()
-                .map(h -> this.mapearDtoSalida(h)).collect(Collectors.toUnmodifiableList());
+                .map(h -> this.mapearDtoSalida(h))
+                .collect(Collectors.toList());
+    }
+    private DtoOutPutHecho mapearDtoSalida(Hecho h) {
+        DtoCoordenada coordenada = new DtoCoordenada(h.getCoordenada().getLatitud(),
+                h.getCoordenada().getLongitud());
+
+        List<DtoMultimedia> listaMultimedia = new ArrayList<>();
+
+        return new DtoOutPutHecho(
+                h.getTitulo(),
+                h.getDescripcion(),
+                h.getCategoria(),
+                listaMultimedia,
+                coordenada,
+                h.getFechaHecho(),
+                h.getId_UsuarioOrigen(),
+                h.getFechaCreacion()
+        );
     }
     @Override
     public void eliminarHechoPorId(Long id) {
