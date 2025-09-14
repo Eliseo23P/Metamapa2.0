@@ -23,8 +23,9 @@ public class HechoController {
         List<DtoOutPutHecho> hechoList = hechoService.findAll();
         return ResponseEntity.ok(hechoList);
     }
+
     @PostMapping
-    public ResponseEntity<?> subirHecho(@RequestBody DtoInputHecho dtoHecho) {
+    public ResponseEntity<?> subirHecho(@ModelAttribute DtoInputHecho dtoHecho) {
         try {
             hechoService.crearHecho(dtoHecho);
             return ResponseEntity.status(201).build();

@@ -1,8 +1,8 @@
 package ar.utn.ba.ddsi.grupo24.dto;
 
-import ar.utn.ba.ddsi.grupo24.models.Multimedia;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,8 +13,9 @@ public class DtoInputHecho {
     private String titulo;
     private String descripcion;
     private String categoria;
-    private List<DtoMultimedia> multimedias;
-    private DtoCoordenada coordenada;
+    private List<MultipartFile> multimedias;
+    private Double longitud;
+    private Double latitud;
     private LocalDate fechaHecho;
     private Long id_UsuarioOrigen;
 }
