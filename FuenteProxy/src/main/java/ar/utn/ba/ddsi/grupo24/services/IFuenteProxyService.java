@@ -1,4 +1,5 @@
 package ar.utn.ba.ddsi.grupo24.services;
 
-public interface IAgregacionService {
+public interface IFuenteProxyService {
+
 }
