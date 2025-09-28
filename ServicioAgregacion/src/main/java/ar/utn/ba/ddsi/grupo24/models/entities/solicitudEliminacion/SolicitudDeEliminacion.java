@@ -1,4 +1,4 @@
-package ar.utn.ba.ddsi.grupo24.models.entities;
+package ar.utn.ba.ddsi.grupo24.models.entities.solicitudEliminacion;
 
 import ar.utn.ba.ddsi.grupo24.models.Hecho;
 

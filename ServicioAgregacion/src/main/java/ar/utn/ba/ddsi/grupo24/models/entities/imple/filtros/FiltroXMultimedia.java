@@ -1,25 +1,22 @@
 package ar.utn.ba.ddsi.grupo24.models.entities.imple.filtros;
 
-import ar.utn.ba.ddsi.grupo24.models.Hecho;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import ar.utn.ba.ddsi.grupo24.dto.DtoValorFiltro;
+import ar.utn.ba.ddsi.grupo24.models.entities.hecho.Hecho;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+import java.util.Objects;
+
 @Getter
 @Setter
-public class FiltroXMultimedia {
-    @Id
-    @GeneratedValue
-    private Long id;
-    private String campoAFiltrar;
+@Entity
+@DiscriminatorValue("MULTIMEDIA")
+public class FiltroXMultimedia extends AFiltro {
 
-    public FiltroXMultimedia(String campoAFiltrar) {this.campoAFiltrar = campoAFiltrar;}
-    public FiltroXMultimedia() {}
-
-    public Boolean pasaHecho(Hecho h ){
-        return h.esMultimedia();
+    private Boolean multimedia;
+    @Override
+    public Boolean cumpleFiltro(Hecho h, DtoValorFiltro valor) {
+        Boolean esMultimedia = h.esMultimedia();
+        return Objects.equals(esMultimedia, valor.getMultimedia());
     }
 }

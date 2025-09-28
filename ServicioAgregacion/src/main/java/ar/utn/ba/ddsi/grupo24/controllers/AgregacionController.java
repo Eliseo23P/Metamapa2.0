@@ -30,4 +30,6 @@ public class AgregacionController {
     public void eliminarHecho(@PathVariable("id") int idHechoExterno){
         this.agregacionService.eliminarHecho(idHechoExterno);
     }
+    @GetMapping("/filtrarColeccion/{handle}")
+    public String filtrarColeccion(){}
 }
