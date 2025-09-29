@@ -27,7 +27,7 @@ public class ColeccionController {
     }
     //Como persona administradora, deseo crear una colección
     @PostMapping("/crear")
-    public DtoInputColeccion crearColecccion(@RequestBody DtoInputColeccion coleccion){
+    public DtoOutputColeccion crearColecccion(@RequestBody DtoInputColeccion coleccion){
         return this.coleccionService.crearColeccion(coleccion);
     }
 

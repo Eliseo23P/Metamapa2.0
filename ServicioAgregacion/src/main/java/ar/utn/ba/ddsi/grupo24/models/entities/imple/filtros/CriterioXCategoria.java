@@ -3,6 +3,8 @@ package ar.utn.ba.ddsi.grupo24.models.entities.imple.filtros;
 
 import ar.utn.ba.ddsi.grupo24.dto.DtoValorFiltro;
 import ar.utn.ba.ddsi.grupo24.models.entities.hecho.Hecho;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.Objects;
@@ -11,11 +13,10 @@ import java.util.Objects;
 @Getter
 @Entity
 @DiscriminatorValue("CATEGORIA")
-public class FiltroXCategoria extends AFiltro {
-    private Long id;
+public class CriterioXCategoria extends ACriterio {
     private String categoria;
     @Override
-    public Boolean cumpleFiltro(Hecho h, DtoValorFiltro valor) {
-        return Objects.equals(h.getCategoria(), valor.getCategoria());
+    public Boolean cumpleFiltro(Hecho h) {
+        return Objects.equals(h.getCategoria(),this.categoria);
     }
 }

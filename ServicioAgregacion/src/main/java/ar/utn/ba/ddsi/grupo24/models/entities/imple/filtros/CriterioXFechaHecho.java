@@ -2,6 +2,8 @@ package ar.utn.ba.ddsi.grupo24.models.entities.imple.filtros;
 
 import ar.utn.ba.ddsi.grupo24.dto.DtoValorFiltro;
 import ar.utn.ba.ddsi.grupo24.models.entities.hecho.Hecho;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,11 +14,11 @@ import java.util.Objects;
 @Setter
 @Entity
 @DiscriminatorValue("FECHASUCESO")
-public class FiltroXFechaHecho extends AFiltro{
+public class CriterioXFechaHecho extends ACriterio {
 
     private LocalDate fechaSuceso;
     @Override
-    public Boolean cumpleFiltro(Hecho h, DtoValorFiltro valor) {
-        return Objects.equals(h.getFechaHecho(), valor.getFechaSuceso());
+    public Boolean cumpleFiltro(Hecho h) {
+        return Objects.equals(h.getFechaHecho(), this.fechaSuceso);
     }
 }

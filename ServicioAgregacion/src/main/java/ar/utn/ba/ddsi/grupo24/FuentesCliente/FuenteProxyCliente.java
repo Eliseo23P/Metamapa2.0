@@ -10,7 +10,7 @@ public class FuenteProxyCliente {
     public FuenteProxyCliente(WebClient webClient) {
         this.webClient = webClient;
     }
-
+//tengo que cambiar esto a un dto la RE PTM
     public String getHecho(int page, int perPage) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder

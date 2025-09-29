@@ -16,6 +16,7 @@ public class AgregacionService {
     }
 
     public String consumirHechos(int page,int perPage){
+       // mapear los hechos...
         return this.fuenteProxy.getHecho(page,perPage);
     }
     //String???
