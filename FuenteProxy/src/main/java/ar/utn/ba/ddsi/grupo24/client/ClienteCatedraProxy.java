@@ -1,13 +1,16 @@
 package ar.utn.ba.ddsi.grupo24.client;
 
+import ar.utn.ba.ddsi.grupo24.dto.DtoOutputHecho;
 import ar.utn.ba.ddsi.grupo24.dto.LoginResponse;
+import ar.utn.ba.ddsi.grupo24.dto.PaginacionHechos;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
 import java.util.Map;
 
-
+//para simplificar directamente usamos el dtoOutput sin DtoInput.
 @Component
 public class ClienteCatedraProxy {
 
@@ -21,8 +24,8 @@ public class ClienteCatedraProxy {
 
     // GET /desastres?page=N&per_page=M
 
-    public String getHecho(int page, int perPage) {
-        return webClient.get()
+    public List<DtoOutputHecho> getHecho(int page, int perPage) {
+        PaginacionHechos respuesta = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/desastres")
                         .queryParam("page", page)
@@ -30,17 +33,22 @@ public class ClienteCatedraProxy {
                         .build())
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(PaginacionHechos.class)
                 .block();
+
+        // Si la respuesta no es nula, devolvés la lista de hechos
+        return respuesta != null ? respuesta.getData() : List.of();
     }
-    public String getHechoXid(int id) {
+    //bodyToMono vs bodyFlux
+
+    public DtoOutputHecho getHechoXid(int id) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/desastres/{id}")
                         .build(id))
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(DtoOutputHecho.class)
                 .block();
     }
 

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IFuenteDinamicaService {
-    void crearHecho(DtoInputHecho dtoHecho) throws IOException;
+    void crearHecho(DtoInputHecho dtoHecho,List<String> rutas) throws IOException;
 
     DtoOutPutHecho editarHecho(DtoInputHecho dto, Long id);
 

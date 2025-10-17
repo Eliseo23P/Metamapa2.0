@@ -1,6 +1,6 @@
 package ar.utn.ba.ddsi.grupo24.models.entities.imple.filtros;
 
-import ar.utn.ba.ddsi.grupo24.models.entities.hecho.Hecho;
+import ar.utn.ba.ddsi.grupo24.models.Hecho;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

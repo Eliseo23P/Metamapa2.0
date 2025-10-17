@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 @Getter
@@ -24,25 +24,36 @@ public class Hecho {
     @CollectionTable(name = "hecho_multimedia", joinColumns = @JoinColumn(name = "hecho_id"))
     @Column(name = "archivo_url")
     private List<String> multimedia;
-    @Embedded
-    private Coordenada coordenada;
-    private LocalDate fechaHecho;
+    //@Embedded
+   // private Coordenada coordenada;
+    private Double latitud;
+    private Double longitud;
+    private LocalDateTime fechaHecho;
     private Long id_UsuarioOrigen;
-    private LocalDate fechaCreacion;
+    private LocalDateTime fechaCreacion;
     private Boolean eliminado;
+    private LocalDateTime fechaModificacion;
     public Hecho() {}
-    public Hecho(String titulo, String descripcion, String categoria,
-                 List<String> multimedias, Coordenada coordenada,
-                 LocalDate fechaHecho, Long idUsuarioOrigen) {
+    public Hecho(String titulo,
+                 String descripcion,
+                 String categoria,
+                 Double latitud,
+                 Double longitud,
+                 List<String> multimedias,
+                 LocalDateTime fechaHecho,
+                 LocalDateTime fechaModificacion, //pensar en trazabilidad
+                 Long idUsuarioOrigen) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
         this.multimedia = multimedias != null ? multimedias : new ArrayList<>();//???
-        this.coordenada = coordenada;
+        //this.coordenada = coordenada;
+        this.latitud = latitud;
+        this.longitud = longitud;
         this.fechaHecho = fechaHecho;
         this.id_UsuarioOrigen = idUsuarioOrigen;
-        this.fechaCreacion = LocalDate.now();
+        this.fechaCreacion = LocalDateTime.now();
+        this.fechaModificacion = fechaModificacion;
     }
-
 
 }

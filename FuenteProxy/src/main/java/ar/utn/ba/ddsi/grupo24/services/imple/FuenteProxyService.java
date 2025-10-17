@@ -1,7 +1,10 @@
 package ar.utn.ba.ddsi.grupo24.services.imple;
 
 import ar.utn.ba.ddsi.grupo24.client.ClienteCatedraProxy;
+import ar.utn.ba.ddsi.grupo24.dto.DtoOutputHecho;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class FuenteProxyService {
@@ -12,11 +15,11 @@ public class FuenteProxyService {
         this.clienteCatedraProxy = clienteCatedraProxy;
     }
 
-    public String obtenerHechos(int page, int perPage) {
+    public List<DtoOutputHecho> obtenerHechos(int page, int perPage) {
         return clienteCatedraProxy.getHecho(page,perPage);
     }
 
-    public String obtenerHechoXid(int id){
+    public DtoOutputHecho obtenerHechoXid(int id){
         return  clienteCatedraProxy.getHechoXid(id);
     }
 

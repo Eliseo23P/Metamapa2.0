@@ -1,5 +1,6 @@
 package ar.utn.ba.ddsi.grupo24.dto;
 
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,5 +18,5 @@ public class DtoInputHecho {
     private Double longitud;
     private Double latitud;
     private LocalDate fechaHecho;
-    private Long id_UsuarioOrigen;
+    private Long id_UsuarioOrigen;//nulleable
 }

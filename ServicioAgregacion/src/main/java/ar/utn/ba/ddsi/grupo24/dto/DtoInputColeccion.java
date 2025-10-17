@@ -10,9 +10,8 @@ import java.util.List;
 public class DtoInputColeccion {
     private String titulo;
     private String descripcion;
-    private List<String> fuentesAsociadas;
+    //private List<String> fuentesAsociadas;
     private List<DtoCriteriosPertenencia> criteriosPertenencia;
-    //private DtoValorFiltro valores;//algunos campos pueden ser null
 }
 //las fuentes asociadas tienen que ser una tabla?
 //por el momento solo seran String

@@ -1,44 +1,52 @@
 package ar.utn.ba.ddsi.grupo24.FuentesCliente;
 
+import ar.utn.ba.ddsi.grupo24.dto.DtoInputHechoClientes;
+import ar.utn.ba.ddsi.grupo24.dto.HechoResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.List;
+
 @Component
 public class FuenteProxyCliente {
 
     private final WebClient webClient;
-
     public FuenteProxyCliente(WebClient webClient) {
         this.webClient = webClient;
     }
-//tengo que cambiar esto a un dto la RE PTM
-    public String getHecho(int page, int perPage) {
+
+    //mientras tanto solo queremos probar de fuente proxy
+    public List<DtoInputHechoClientes> getHecho() {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .queryParam("page", page)
-                        .queryParam("per_page", perPage)
+                        .queryParam("page", 1)
+                        .queryParam("per_page", 20)
                         .build())
                 .retrieve()
-                .bodyToMono(String.class)
-                .block();
+                .bodyToFlux(DtoInputHechoClientes.class) // convierte cada elemento del array a DtoInputHechoClientes
+                .collectList()                           // junta todos en una lista
+                .block();                                 // espera el resultado
     }
 
-    public String getHechoXid(int id, String nombreApi) {
+
+    public DtoInputHechoClientes getHechoXid(Long id) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/{nombreApi}/{id}")
-                        .build(nombreApi,id))
+                        .path("{id}")
+                        .build(id))
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(DtoInputHechoClientes.class) // 👈 Mono para un solo objeto
                 .block();
     }
 
-    public String eliminarHecho(int id, String nombreApi) {
-        return webClient.delete()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/{nombreApi}/{id}")
-                        .build(nombreApi,id))
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
+
+    // public String eliminarHecho(int id, String nombreApi) {
+    //        return webClient.delete()
+    //                .uri(uriBuilder -> uriBuilder
+    //                        .path("/{nombreApi}/{id}")
+    //                        .build(nombreApi,id))
+    //                .retrieve()
+    //                .bodyToMono(String.class)
+    //                .block();
+    //    }
 }

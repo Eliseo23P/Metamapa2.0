@@ -12,6 +12,7 @@ public class DtoCriteriosPertenencia {
     private String categoria;
     private LocalDate fechaSuceso;
     private Boolean multimedia;
+
 }
 //aclaracion los datos matchean automaticamente y solo hace uso de las atributos de la
 //clase especifica

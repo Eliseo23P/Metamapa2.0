@@ -1,6 +1,6 @@
 package ar.utn.ba.ddsi.grupo24.models.entities.imple.filtros;
 
-import ar.utn.ba.ddsi.grupo24.models.entities.hecho.Hecho;
+import ar.utn.ba.ddsi.grupo24.models.Hecho;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
@@ -18,7 +18,7 @@ import jakarta.persistence.*;
         @JsonSubTypes.Type(value = CriterioXTitulo.class, name = "titulo"),
         @JsonSubTypes.Type(value = CriterioXCategoria.class, name = "categoria"),
         @JsonSubTypes.Type(value = CriterioXFechaHecho.class, name = "fechaSuceso"),
-        @JsonSubTypes.Type(value = CriterioXMultimedia.class, name = "multimedia")
+      //  @JsonSubTypes.Type(value = CriterioXMultimedia.class, name = "multimedia")
 })
 public abstract class ACriterio {
     @Id
